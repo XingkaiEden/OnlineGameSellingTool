@@ -1,0 +1,144 @@
+/*头部*/
+.nav {
+  width: 100%;
+  height: 50px;
+  background: linear-gradient(90deg, #ebab54, #f6801b);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  z-index: 5;
+}
+
+.nav_right {
+  width: 100%;
+  padding-right: 3%;
+  align-items: center;
+}
+
+.title_font {
+  width: 50%;
+  height: 100%;
+  align-items: center;
+  margin-left: 3%;
+}
+
+.title_font img {
+  width: 90%;
+  height: 100%;
+}
+
+.nav_right_img2 {
+  width: 10%;
+  height: 10%;
+}
+
+.nav_right_img2 img {
+  width: 100%;
+  height: 100%;
+}
+
+/*内容主体*/
+.index {
+  width: 100%;
+  padding: 40px 0 0 0;
+}
+
+.index .content {
+  width: 100%;
+}
+
+/*图片1*/
+.lunbo {
+  width: 100%;
+  position: fixed;
+  top: 50px;
+  z-index: 10;
+}
+
+.game_search {
+  width: 90%;
+  height: 30px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 15px;
+  background: #ffffff;
+  position: absolute;
+  top: 15px;
+  left: 5%;
+  z-index: 100;
+  border: 1px solid #72767b;
+}
+
+.game_search input {
+  width: 70%;
+}
+
+.banner {
+  width: 100%;
+  height: 220px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index: 10;
+}
+
+.banner_item {
+  width: 100%;
+  height: 100% !important;
+}
+
+.banner_item img {
+  height: 100%;
+  width: 100%;
+}
+
+/* 子导航 */
+.subnav {
+  width: 100%;
+  margin-top: 240px;
+  position: relative;
+}
+
+.subnav .hot_img {
+  text-align: center;
+  height: 16px;
+  margin-bottom: 2%;
+}
+
+.subnav .hot_img img {
+  height: 100%;
+}
+
+.game_img {
+  flex-wrap: wrap;
+  margin: 0 4%;
+}
+
+.game_pho {
+  width: 65px;
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.game_pho img {
+  width: 65px;
+  height: 65px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+}
+
+.game_pho span {
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.float_left {
+  float: left;
+}

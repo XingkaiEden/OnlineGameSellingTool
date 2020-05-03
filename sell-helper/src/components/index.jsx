@@ -1,7 +1,7 @@
-import SearchBar from "./common/searchBar";
 import React, { Component } from "react";
-import { Link, NavLink } from "react-router-dom";
-import Game from "./common/game";
+import WelcomePic from "./common/welcome";
+import GamePage from "./gamePage";
+import CharactersPage from "./charactersPage";
 
 class Index extends Component {
   state = {
@@ -40,14 +40,12 @@ class Index extends Component {
     return "/charactersPage/" + gameName;
   };
   render() {
+    const { games } = this.state;
     return (
       <div>
-        <SearchBar></SearchBar>
-        {this.state.games.map((game) => (
-          <Link key={game.gameName} to={this.getSelectedGameRUL(game.gameName)}>
-            <Game gameName={game.gameName} gamePicURL={game.gamePicURL} />
-          </Link>
-        ))}
+        <WelcomePic />
+        <GamePage games={games[0]} />
+        <CharactersPage games={games} />
       </div>
     );
   }

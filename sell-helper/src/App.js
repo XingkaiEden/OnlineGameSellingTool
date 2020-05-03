@@ -1,18 +1,16 @@
 import React from "react";
+import logo from "./logo.svg";
 import "./App.css";
-import { Route, Switch, Redirect } from "react-router-dom";
-import Index from "./components";
 
-import CharactersPage from "./components/charactersPage";
-import gamePage from "./components/gamePage";
+import SearchBar from "./components/common/searchBar";
+import Index from "./components";
+import WelcomePic from "./components/common/welcome";
 
 function App() {
   return (
     <React.Fragment>
-      <Switch>
-        <Route path="/charactersPage" component={CharactersPage} />
-        <Route path="/" component={gamePage} />
-      </Switch>
+      <WelcomePic />
+      <Index />
     </React.Fragment>
   );
 }

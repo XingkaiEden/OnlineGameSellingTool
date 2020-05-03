@@ -65,7 +65,7 @@
   align-items: center;
   border-radius: 15px;
   background: #ffffff;
-  position: relative;
+  position: absolute;
   top: 15px;
   left: 5%;
   z-index: 100;
@@ -139,6 +139,6 @@
   text-overflow: ellipsis;
 }
 
-.block {
-  display: block;
+.float_left {
+  float: left;
 }

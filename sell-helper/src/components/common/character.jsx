@@ -1,16 +1,13 @@
 import React, { Component } from "react";
 
 class Character extends Component {
-  state = {
-    name: "",
-    picURL: "",
-    lvl: 0,
-  };
+  state = {};
   render() {
+    const { picURL, lvl, name } = this.props;
     return (
-      <div>
-        <img src={this.state.picURL} />
-        {this.state.lvl}★{this.state.name}
+      <div className="game_pho float_left">
+        <img src={picURL} />
+        {lvl}★{name}
       </div>
     );
   }

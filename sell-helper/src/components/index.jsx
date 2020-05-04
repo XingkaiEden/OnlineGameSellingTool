@@ -36,15 +36,13 @@ class Index extends Component {
       },
     ],
   };
-  getSelectedGameRUL = (gameName) => {
-    return "/charactersPage/" + gameName;
-  };
+
   render() {
     return (
       <div>
         <SearchBar></SearchBar>
         {this.state.games.map((game) => (
-          <Link key={game.gameName} to={this.getSelectedGameRUL(game.gameName)}>
+          <Link key={game.gameName} to={`/charactersPage/${game.gameName}`}>
             <Game gameName={game.gameName} gamePicURL={game.gamePicURL} />
           </Link>
         ))}

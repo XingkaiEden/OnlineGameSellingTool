@@ -12,6 +12,7 @@ function App() {
     <React.Fragment>
       <WelcomePic />
       <Switch>
+        <Route path="/charactersPage/:gameName?" component={CharactersPage} />
         <Route path="/charactersPage" component={CharactersPage} />
 
         <Route path="/resultPage" component={ResultPage} />

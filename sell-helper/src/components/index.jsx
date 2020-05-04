@@ -1,9 +1,8 @@
-import SearchBar from "./common/searchBar";
 import React, { Component } from "react";
+import SearchBar from "./common/searchBar";
 import { Link, NavLink } from "react-router-dom";
 import Game from "./common/game";
-
-class Index extends Component {
+class GamePage extends Component {
   state = {
     games: [
       {
@@ -29,20 +28,25 @@ class Index extends Component {
         ],
       },
       {
-        gameName: "anye",
+        gameName: "山海镜花",
         gamePicURL: require("./pic/characterPic/fe52a0c185314b9781eb030800b15156.png"),
         servers: ["苹果", "安卓"],
         characters: [],
       },
     ],
   };
-
+  getSelectedGameRUL = (gameName) => {
+    return "/charactersPage/" + gameName;
+  };
   render() {
+    this.setState((state, props) => ({
+      games: state.games + props.games,
+    }));
     return (
       <div>
         <SearchBar></SearchBar>
-        {this.state.games.map((game) => (
-          <Link key={game.gameName} to={`/charactersPage/${game.gameName}`}>
+        {games.map((game) => (
+          <Link key={game.gameName} to={this.getSelectedGameRUL(game.gameName)}>
             <Game gameName={game.gameName} gamePicURL={game.gamePicURL} />
           </Link>
         ))}
@@ -51,4 +55,4 @@ class Index extends Component {
   }
 }
 
-export default Index;
+export default GamePage;

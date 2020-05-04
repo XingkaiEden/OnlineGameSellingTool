@@ -29,7 +29,7 @@ class CharactersPage extends Component {
         ],
       },
       {
-        gameName: "anye",
+        gameName: "山海镜花",
         gamePicURL: require("./pic/characterPic/fe52a0c185314b9781eb030800b15156.png"),
         servers: ["苹果", "安卓"],
         characters: [],

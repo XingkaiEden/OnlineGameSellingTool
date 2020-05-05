@@ -6,40 +6,15 @@ import WelcomePic from "./components/common/welcome";
 import CharactersPage from "./components/charactersPage";
 import ResultPage from "./components/resultPage";
 import GamePage from "./components/gamePage";
-
+import { getGame, getGames } from "./components/services/fakeGameService";
 class App extends Component {
-  state = {
-    games: [
-      {
-        gameName: "公主链接",
-        gamePicURL: require("./components/pic/characterPic/fe52a0c185314b9781eb030800b15156.png"),
-        servers: ["苹果", "安卓"],
-        characters: [
-          {
-            name: "公主链接",
-            picURL: require("./components/pic/characterPic/fe52a0c185314b9781eb030800b15156.png"),
-            lvl: 0,
-          },
-          {
-            name: "公主链接2",
-            picURL: require("./components/pic/characterPic/fe52a0c185314b9781eb030800b15156.png"),
-            lvl: 0,
-          },
-          {
-            name: "公主链接3ß",
-            picURL: require("./components/pic/characterPic/fe52a0c185314b9781eb030800b15156.png"),
-            lvl: 0,
-          },
-        ],
-      },
-      {
-        gameName: "山海镜花",
-        gamePicURL: require("./components/pic/characterPic/fe52a0c185314b9781eb030800b15156.png"),
-        servers: ["苹果", "安卓"],
-        characters: [],
-      },
-    ],
-  };
+  state = {};
+
+  constructor(props) {
+    super(props);
+    let games = getGames();
+    this.state = { games };
+  }
 
   render() {
     return (

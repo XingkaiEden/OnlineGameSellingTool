@@ -5,7 +5,9 @@ class Button extends Component {
   render() {
     return (
       <div>
-        <button className="btn btn-secondary">{this.props.value}</button>
+        <button className="reset" onClick={this.props.onClick}>
+          {this.props.value}
+        </button>
       </div>
     );
   }

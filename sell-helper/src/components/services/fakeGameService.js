@@ -25,7 +25,23 @@ const games = [
     gameName: "山海镜花",
     gamePicURL: require("../pic/characterPic/fe52a0c185314b9781eb030800b15156.png"),
     servers: ["苹果", "安卓"],
-    characters: [],
+    characters: [
+      {
+        name: "公主链接",
+        picURL: require("../pic/characterPic/fe52a0c185314b9781eb030800b15156.png"),
+        lvl: 3,
+      },
+      {
+        name: "公主链接2",
+        picURL: require("../pic/characterPic/fe52a0c185314b9781eb030800b15156.png"),
+        lvl: 2,
+      },
+      {
+        name: "公主链接3ß",
+        picURL: require("../pic/characterPic/fe52a0c185314b9781eb030800b15156.png"),
+        lvl: 0,
+      },
+    ],
   },
 ];
 

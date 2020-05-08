@@ -10,24 +10,39 @@ class Character extends Component {
       isChecked: !this.state.isChecked,
     });
   };
+
+  conditionalRender = () => {
+    const { picURL, lvl, name, onSelect, selectable } = this.props;
+    if (this.props.selectable)
+      return (
+        <div className="game_pho">
+          <img src={picURL} />
+          <input
+            type="checkbox"
+            className="input"
+            checked={this.state.isChecked}
+            onChange={this.toggleChange}
+            onClick={() => onSelect(lvl, name)}
+            id="checkID"
+          />
+          <label htmlFor="checkID"></label>
+          <span className="font_size_14">
+            {lvl}★{name}
+          </span>
+        </div>
+      );
+    else
+      return (
+        <div className="game_pho">
+          <img src={picURL} />
+          <span className="font_size_14">
+            {lvl}★{name}
+          </span>
+        </div>
+      );
+  };
   render() {
-    const { picURL, lvl, name, onSelect } = this.props;
-    return (
-      <div className="game_pho" onClick={() => onSelect(lvl, name)}>
-        <img src={picURL} />
-        <input
-          type="checkbox"
-          className="input"
-          checked={this.state.isChecked}
-          onChange={this.toggleChange}
-          id="checkID"
-        />
-        <label htmlFor="checkID"></label>
-        <span className="font_size_14">
-          {lvl}★{name}
-        </span>
-      </div>
-    );
+    return <div>{this.conditionalRender()}</div>;
   }
 }
 

@@ -6,13 +6,25 @@ import Character from "./common/character";
 import SelectBlock from "./common/selectBlock";
 import SelectBox from "./common/selectBox";
 import UnselectBox from "./common/unselectBox";
+import {
+  setSelectedAccounts,
+  setServer,
+} from "./services/fakeSelectedDataService";
+import { getAccounts } from "./services/fakeAccountsService";
 class CharactersPage extends Component {
-  state = {
-    selectedCharacters: [],
-    selectedServer: "",
-  };
+  state = {};
 
-  getCurrentGameName = (currentGameName) => {
+  constructor(props) {
+    super(props);
+    const currentGameName = this.props.match.params.gameName;
+    this.state = {
+      selectedCharacters: [],
+      selectedServer: "",
+      currentGameName,
+    };
+  }
+
+  getCurrentGameNameIdx = (currentGameName) => {
     let result,
       counter = 0;
     this.props.games.forEach((element) => {
@@ -21,17 +33,30 @@ class CharactersPage extends Component {
     });
     return result;
   };
-  handleSelect = (lvl, name) => {
-    //change image so that the user could know img has been selected
+  isDuplicateCharacter = (nName) => {
+    const selectedCharacters = [...this.state.selectedCharacters];
 
-    const selectedCharacters = [
-      ...this.state.selectedCharacters,
-      { name: name, lvl: lvl },
-    ];
-    this.setState({ selectedCharacters });
+    return selectedCharacters.find(({ name }) => name === nName);
+  };
+  handleSelect = (lvl, name) => {
+    //first click, add it to state, second click, delete it from state.
+    //check if this character has been in state
+    const newCharacter = this.isDuplicateCharacter(name);
+    if (!newCharacter) {
+      const selectedCharacters = [
+        ...this.state.selectedCharacters,
+        { name: name, lvl: lvl },
+      ];
+      this.setState({ selectedCharacters });
+    } else {
+      //it is duplicate character, delete it from state
+      const selectedCharacters = [...this.state.selectedCharacters].filter(
+        (c) => !(c.name === name && c.lvl === lvl)
+      );
+      this.setState({ selectedCharacters });
+    }
   };
   handleSelectBox = (serverName) => {
-    console.log(serverName);
     this.setState({ selectedServer: serverName });
   };
 
@@ -54,17 +79,32 @@ class CharactersPage extends Component {
       );
     }
   };
+
+  handleReset = () => {
+    window.location.reload();
+  };
+
+  handleSearch = () => {
+    //handle selected characters, put them into server
+    const characterList = [...this.state.selectedCharacters];
+    const server = this.state.selectedServer;
+    const gameName = this.props.match.params.gameName;
+    if (server === "") setServer(false);
+    else setServer(true);
+    const searchedAccounts = getAccounts(gameName, server, characterList);
+    setSelectedAccounts(searchedAccounts);
+  };
   render() {
-    const currentGameIdx = this.getCurrentGameName(
-      this.props.match.params.gameName
+    const currentGameIdx = this.getCurrentGameNameIdx(
+      this.state.currentGameName
     );
 
     return (
       <div>
-        <form action="" className="form-inline">
+        {/* <form action="" className="form-inline">
           <SearchBar className=""></SearchBar>
           <SearchBar></SearchBar>
-        </form>
+        </form> */}
         <span>
           <span>游戏区服</span>
           {this.props.games[currentGameIdx].servers.map((server) =>
@@ -78,12 +118,15 @@ class CharactersPage extends Component {
             name={character.name}
             lvl={character.lvl}
             picURL={character.picURL}
+            selectable={true}
           />
         ))}
 
-        <Button value="重置" />
-        <Button value="搜索" />
-        {console.log(this.state.selectedCharacters)}
+        <Button value="重置" onClick={this.handleReset} />
+
+        <Link to="/resultPage">
+          <Button value="搜索" onClick={this.handleSearch} />
+        </Link>
       </div>
     );
   }

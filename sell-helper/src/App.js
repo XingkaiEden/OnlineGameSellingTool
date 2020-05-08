@@ -19,22 +19,26 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <WelcomePic />
-        <Switch>
-          <Route
-            path="/charactersPage/:gameName"
-            render={(props) => (
-              <CharactersPage games={this.state.games} {...props} />
-            )}
-          />
-          <Route path="/charactersPage/" component={CharactersPage} />
+        <div className="container">
+          <WelcomePic />
+          <Switch>
+            <Route
+              path="/charactersPage/:gameName"
+              render={(props) => (
+                <CharactersPage games={this.state.games} {...props} />
+              )}
+            />
+            <Route path="/charactersPage/" component={CharactersPage} />
 
-          <Route path="/resultPage" component={ResultPage} />
-          <Route
-            path="/"
-            render={(props) => <GamePage games={this.state.games} {...props} />}
-          />
-        </Switch>
+            <Route path="/resultPage" component={ResultPage} />
+            <Route
+              path="/"
+              render={(props) => (
+                <GamePage games={this.state.games} {...props} />
+              )}
+            />
+          </Switch>
+        </div>
       </React.Fragment>
     );
   }

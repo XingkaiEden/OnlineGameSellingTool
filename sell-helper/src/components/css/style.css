@@ -120,9 +120,64 @@ span {
   border-radius: 10px;
   border: 1px solid #c4c4c4;
   margin: 0 5px;
+  cursor: pointer;
 }
 
 .selectBlock {
   background: " blue";
   color: "white";
+}
+
+.info {
+  width: 90%;
+  margin: 10px auto;
+  height: 40px;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    from(#fac786),
+    to(#f89e51)
+  );
+  background: linear-gradient(90deg, #fac786, #f89e51);
+  border-radius: 6px;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.jusc_around {
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+}
+.display_flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.head {
+  width: 90%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin: 10px auto 0;
+}
+.head p {
+  display: inline-block;
+  width: 4px;
+  height: 10px;
+  background: #f6801b;
+  border-radius: 5px;
+  margin: 5px 5px 5px 0;
+}
+.reset {
+  width: 50%;
+  height: 40px;
+  line-height: 40px;
+  margin: 30px auto;
+  text-align: center;
+  border: 1px solid #c4c4c4;
+  border-radius: 4px;
 }

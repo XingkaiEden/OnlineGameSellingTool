@@ -9,7 +9,4 @@ public interface SelectedAccountDao {
 
     ArrayList<Account> getSelectedAccounts();
 
-    int setServer();
-
-    boolean getServer();
 }

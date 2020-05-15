@@ -2,6 +2,8 @@ package com.xingkai.sell_helper.sell_helper.model;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Account
  */
@@ -12,7 +14,8 @@ public class Account {
     private final String serverName;
     private final ArrayList<Character> characters;
 
-    public Account(String gameName, String serverName, int id) {
+    public Account(@JsonProperty("gameName") String gameName, @JsonProperty("serverName") String serverName,
+            @JsonProperty("_id") int id) {
         this.id = id;
         this.gameName = gameName;
         this.serverName = serverName;

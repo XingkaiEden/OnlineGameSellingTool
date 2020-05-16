@@ -1,5 +1,6 @@
 package com.xingkai.sell_helper.sell_helper.api;
 
+import com.xingkai.sell_helper.sell_helper.model.ServerIsSelected;
 import com.xingkai.sell_helper.sell_helper.service.IsServerSelectedService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class IsServerSelectedController {
     }
 
     @PostMapping
-    public int setServerIsSelected(@RequestBody boolean isSelected) {
+    public int setServerIsSelected(@RequestBody ServerIsSelected isSelected) {
         return IsServerSelectedService.setServerIsSelected(isSelected);
     };
 

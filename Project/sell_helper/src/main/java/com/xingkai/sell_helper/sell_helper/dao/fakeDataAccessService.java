@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import com.xingkai.sell_helper.sell_helper.model.Account;
 import com.xingkai.sell_helper.sell_helper.model.Game;
+import com.xingkai.sell_helper.sell_helper.model.ServerIsSelected;
 
 import org.springframework.stereotype.Repository;
 
@@ -81,8 +82,8 @@ public class fakeDataAccessService implements AccountDao, GameDao, SelectedAccou
     }
 
     @Override
-    public int setServerIsSelected(boolean isSelected) {
-        SERVER_IS_SELECTED = isSelected;
+    public int setServerIsSelected(ServerIsSelected isSelected) {
+        SERVER_IS_SELECTED = isSelected.getServerStatus();
         return 1;
     }
 

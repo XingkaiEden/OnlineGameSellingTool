@@ -7,6 +7,7 @@ import com.xingkai.sell_helper.sell_helper.dao.GameDao;
 import com.xingkai.sell_helper.sell_helper.model.Game;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +15,7 @@ public class GameService {
     private final GameDao gameDao;
 
     @Autowired
-    public GameService(GameDao gameDao) {
+    public GameService(@Qualifier("postgres") GameDao gameDao) {
         this.gameDao = gameDao;
     }
 

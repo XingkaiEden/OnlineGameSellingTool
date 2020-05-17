@@ -18,8 +18,8 @@ public class SelectedAccountService {
         this.selectedAccountDao = selectedAccountDao;
     }
 
-    public int setSelectedAccounts(ArrayList<Account> accounts) {
-        return selectedAccountDao.setSelectedAccounts(accounts);
+    public int setSelectedAccounts(Account account) {
+        return selectedAccountDao.setSelectedAccounts(account);
     };
 
     public ArrayList<Account> getSelectedAccounts() {

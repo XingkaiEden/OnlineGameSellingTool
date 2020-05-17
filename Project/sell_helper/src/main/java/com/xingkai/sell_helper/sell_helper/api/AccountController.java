@@ -23,9 +23,9 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @GetMapping(path = "{gameName}/{server}")
+    @GetMapping(path = "{gameName}/{server}/{values}")
     public Optional<Account> getAccountsForGame(@PathVariable("gameName") String gameName,
-            @PathVariable("server") String server, ArrayList<Character> characters) {
+            @PathVariable("server") String server, @PathVariable("values") ArrayList<Character> characters) {
 
         // don't know how to deal with the arraylist
         return accountService.getAccountsForGame(gameName, server, characters);

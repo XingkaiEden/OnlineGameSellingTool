@@ -22,6 +22,13 @@ public class Account {
         characters = new ArrayList<>();
     }
 
+    public Account(int id) {
+        this.id = id;
+        gameName = "";
+        serverName = "";
+        characters = new ArrayList<>();
+    }
+
     public String getGameName() {
         return gameName;
     }

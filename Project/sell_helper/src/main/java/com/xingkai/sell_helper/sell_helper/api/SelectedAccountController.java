@@ -28,9 +28,9 @@ public class SelectedAccountController {
     };
 
     @PostMapping
-    public int setSelectedAccounts(@RequestBody ArrayList<Account> accounts) {
+    public int setSelectedAccounts(@RequestBody Account account) {
         // problems
-        return selectedAccountService.setSelectedAccounts(accounts);
+        return selectedAccountService.setSelectedAccounts(account);
     }
 
 }

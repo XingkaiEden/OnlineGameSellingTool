@@ -217,6 +217,7 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
         // characters, store them into a List<Character> accountCharacters
         // 2. now implement an algorithm finding if the list contain all elements in
         // characters list.
+        ArrayList<Character> tempList = (ArrayList<Character>) characters.clone();
         List<Account> results = new ArrayList<>();
         for (Account account : accountFirstSet) {
             final String sql = "SELECT character_name, lvl FROM account_characters WHERE belong_account_id=?";
@@ -229,12 +230,13 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
             // 2
 
             for (Character character : characters) {// for every character in selectedCharacters
-                List<Character> tempList = new ArrayList<>();
+
                 for (Character accountCharacter : accountCharacters) {// for every character in the account
-                    if (character.getName().equals(accountCharacter.getName()))
-                        tempList.add(accountCharacter);
+                    if (character.getName().equals(accountCharacter.getName())
+                            && character.getlvl() == accountCharacter.getlvl())
+                        tempList.remove(character);
                 }
-                if (characters.equals(tempList))
+                if (tempList.size() == 0)
                     results.add(account);
             }
         }

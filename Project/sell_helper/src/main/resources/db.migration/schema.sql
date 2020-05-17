@@ -2,9 +2,10 @@ DROP TABLE is_server_selected cascade;
 DROP TABLE game cascade;
 DROP TABLE game_servers cascade;
 DROP TABLE game_characters cascade;
-DROP TABLE selected_accounts cascade;
 DROP TABLE account cascade;
 DROP TABLE account_characters cascade;
+DROP TABLE selected_accounts cascade;
+
 
 
 CREATE TABLE is_server_selected
@@ -55,13 +56,7 @@ CREATE TABLE game_characters
 
 -- Create the table in the specified schema
 
-CREATE TABLE selected_accounts
-(
-    selected_account_id INT NOT NULL PRIMARY KEY,
-    -- primary key column
-    _id INT REFERENCES account(_id)
-    -- specify more columns here
-);
+
 
 CREATE TABLE account
 (
@@ -69,6 +64,13 @@ CREATE TABLE account
     -- primary key column
     game_name VARCHAR(50) NOT NULL,
     server_name VARCHAR(50) NOT NULL
+    -- specify more columns here
+);
+CREATE TABLE selected_accounts
+(
+    selected_account_id INT NOT NULL PRIMARY KEY,
+    -- primary key column
+    _id INT REFERENCES account(_id)
     -- specify more columns here
 );
 

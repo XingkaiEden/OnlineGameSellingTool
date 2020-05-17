@@ -25,9 +25,17 @@ public class AccountController {
 
     @GetMapping(path = "{gameName}/{server}/{values}")
     public Optional<Account> getAccountsForGame(@PathVariable("gameName") String gameName,
-            @PathVariable("server") String server, @PathVariable("values") ArrayList<Character> characters) {
+            @PathVariable("server") String server, @PathVariable("values") String characters) {
+        ArrayList<Character> charactersList = new ArrayList<>();
+        String[] s = characters.split("&");
+        for (String subs : s) {
+            String[] temp = subs.split(",");
+            String name = temp[0];
+            int lvl = Integer.parseInt(temp[1]);
+            charactersList.add(new Character(name, lvl));
+        }
 
         // don't know how to deal with the arraylist
-        return accountService.getAccountsForGame(gameName, server, characters);
+        return accountService.getAccountsForGame(gameName, server, charactersList);
     }
 }

@@ -6,6 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
 import "./components/css/style.css";
 import "bootstrap/dist/css/bootstrap.css";
+console.log("superman", process.env);
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>

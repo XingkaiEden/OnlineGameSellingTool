@@ -141,3 +141,7 @@ export function getAccounts(gameName, server, characters) {
 
   return selectedAccounts;
 }
+
+export function saveAccount(account) {
+  accounts.push(account);
+}

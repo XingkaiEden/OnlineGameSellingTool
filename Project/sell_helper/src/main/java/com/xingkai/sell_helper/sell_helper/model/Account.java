@@ -3,6 +3,7 @@ package com.xingkai.sell_helper.sell_helper.model;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.xingkai.sell_helper.sell_helper.dao.AccountDao;
 
 /**
  * Account
@@ -44,4 +45,5 @@ public class Account {
     public ArrayList<Character> getCharacters() {
         return characters;
     }
+
 }

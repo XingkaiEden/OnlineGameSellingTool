@@ -9,4 +9,5 @@ public interface SelectedAccountDao {
 
     ArrayList<Account> getSelectedAccounts();
 
+    int clearTable();
 }

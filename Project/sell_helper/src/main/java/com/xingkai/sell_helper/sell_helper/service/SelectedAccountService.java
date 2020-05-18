@@ -26,4 +26,8 @@ public class SelectedAccountService {
         return selectedAccountDao.getSelectedAccounts();
     };
 
+    public int clearTable() {
+        return selectedAccountDao.clearTable();
+    }
+
 }

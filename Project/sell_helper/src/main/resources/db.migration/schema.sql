@@ -49,7 +49,7 @@ CREATE TABLE game_characters
     belong_to_game VARCHAR(100) NOT NULL,
     -- primary key column
     lvl INT NOT NULL,
-    pic_url VARCHAR(100) NOT NULL,
+    pic_url VARCHAR(100) ,
     game_name VARCHAR(50) REFERENCES game(game_name)
     -- specify more columns here
 );
@@ -101,3 +101,10 @@ INSERT INTO account_characters(character_name, lvl, belong_account_id) VALUES ('
 INSERT INTO account_characters(character_name, lvl, belong_account_id) VALUES ('sdwer',2,1);
 INSERT INTO account_characters(character_name, lvl, belong_account_id) VALUES ('zxcvfbv',3,2);
 INSERT INTO account_characters(character_name, lvl, belong_account_id) VALUES ('werer',2,1);
+
+
+INSERT INTO game(game_name) VALUES ('gongzhulianjie');
+INSERT INTO game_servers(belong_to_game, server_name) VALUES ('gongzhulianjie', 'apple') ;
+INSERT INTO game_servers(belong_to_game, server_name) VALUES ('gongzhulianjie', 'andrion') ;
+INSERT INTO game_characters(belong_to_game, lvl, character_name) VALUES ('gongzhulianjie', 1, 'dadfd');
+INSERT INTO game_characters(belong_to_game, lvl, character_name) VALUES ('gongzhulianjie', 2, 'bvvv');

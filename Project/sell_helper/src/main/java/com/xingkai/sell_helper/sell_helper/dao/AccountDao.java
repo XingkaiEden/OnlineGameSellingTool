@@ -9,4 +9,5 @@ import com.xingkai.sell_helper.sell_helper.model.Character;
 public interface AccountDao {
     Optional<Account> getAccountsForGame(String gameName, String server, ArrayList<Character> characters);
 
+    int saveAccount(Account account);
 }

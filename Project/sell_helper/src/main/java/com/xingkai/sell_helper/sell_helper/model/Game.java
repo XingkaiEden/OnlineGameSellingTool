@@ -6,19 +6,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Game {
     private final String name;
-    private final ArrayList<Account> accounts;
-    private final ArrayList<String> servers;
+    private final ArrayList<Character> characters;
+    private final ArrayList<Server> servers;
 
-    public Game(@JsonProperty("gameName") String name, @JsonProperty("servers") ArrayList<String> servers) {
+    public Game(@JsonProperty("gameName") String name, @JsonProperty("servers") ArrayList<Server> servers,
+            ArrayList<Character> characters) {
         this.name = name;
         this.servers = servers;
-        this.accounts = new ArrayList<>();
+        this.characters = characters;
     }
 
     public Game(String name) {
         this.name = name;
         this.servers = null;
-        this.accounts = new ArrayList<>();
+        this.characters = new ArrayList<>();
 
     }
 
@@ -26,11 +27,17 @@ public class Game {
         return name;
     }
 
-    public ArrayList<String> getServerName() {
+    public ArrayList<Server> getServerName() {
         return servers;
     }
 
-    public ArrayList<Account> getAccounts() {
-        return accounts;
+    // public void setCharacters(ArrayList<Character> c) {
+    // for (Character character : c) {
+    // this.characters.add(character);
+    // }
+    // }
+
+    public ArrayList<Character> getCharacters() {
+        return characters;
     }
 }

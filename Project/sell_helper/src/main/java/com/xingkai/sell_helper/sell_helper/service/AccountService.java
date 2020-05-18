@@ -24,4 +24,8 @@ public class AccountService {
         return accountDao.getAccountsForGame(gameName, server, characters);
     }
 
+    public int saveAccount(Account account) {
+        return accountDao.saveAccount(account);
+    }
+
 }

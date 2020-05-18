@@ -77,6 +77,8 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
     }
 
     /**
+     * insert an account into selected accounts table
+     * 
      * @param account
      * @return int
      */
@@ -140,31 +142,41 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
     }
 
     /**
+     * Get all games in the database, with their name, picURL, servers[]. characters
+     * Character should have name picRUL and lvl
+     * 
      * @return ArrayList<Game>
      */
     @Override
     public ArrayList<Game> getGames() {
         final String selectSql = "SELECT game_name FROM game";
-        final String selectServerName = "SELECT belong_to_game, server_name FROM game_servers ";
+        final String selectServerName = "SELECT belong_to_game, server_name FROM game_servers WHERE belong_to_game=?";
+        final String selectCharactersSql = "SELECT * FROM game_characters WHERE belong_to_game=?";
+        // get game from table
         List<Game> games = jdbcTemplate.query(selectSql, (ResultSet resultSet, int i) -> {
             String name = resultSet.getString("game_name");
             return new Game(name);
         });// YOU MAY define a getAccount method
-        List<Server> servers = jdbcTemplate.query(selectServerName, (ResultSet resultSet, int i) -> {
-            String name = resultSet.getString("server_name");
-            String gameName = resultSet.getString("belong_to_game");
-            return new Server(name, gameName);
-        });
 
         ArrayList<Game> result = new ArrayList<>();
         for (Game game : games) {
-            ArrayList<String> serverName = new ArrayList<>();
-            for (Server server : servers) {
-                if (game.getName().equals(server.getBelongToGame())) {
-                    serverName.add(server.getName());
-                }
-            }
-            result.add(new Game(game.getName(), serverName));
+            Object[] params = new Object[] { game.getName() };
+            // get servers of the game from table
+            List<Server> servers = jdbcTemplate.query(selectServerName, params, (ResultSet resultSet, int i) -> {
+                String name = resultSet.getString("server_name");
+                String gameName = resultSet.getString("belong_to_game");
+                return new Server(name, gameName);
+            });
+
+            // get characters of the game from table
+
+            List<Character> characters = jdbcTemplate.query(selectCharactersSql, params,
+                    (ResultSet resultSet, int i) -> {
+                        String name = resultSet.getString("character_name");
+                        int lvl = Integer.parseInt(resultSet.getString("lvl"));
+                        return new Character(name, lvl);
+                    });
+            result.add(new Game(game.getName(), (ArrayList<Server>) servers, (ArrayList<Character>) characters));
 
         }
 
@@ -242,6 +254,43 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
         }
 
         return results.stream().findAny();
+    }
+
+    /**
+     * @return int
+     */
+    @Override
+    public int clearTable() {
+        String deleteSql = "DELETE FROM selected_account";
+        jdbcTemplate.update(deleteSql);
+        return 1;
+    }
+
+    /**
+     * storing an account into database
+     * 
+     * @param account an account has id, gameName, serverName, characters[]
+     * @return int
+     */
+    @Override
+    public int saveAccount(Account account) {
+        final String insertSqlAccount = "INSERT INTO account(_id, game_name, server_name) VALUES(?,?,?)";
+        final String insertSqlAccountCharacters = "INSERT INTO account_characters(character_name, lvl, belong_account_id) VALUES(?,?,?)";
+        // define query arguments
+        Object[] paramsA = new Object[] { account.getId(), account.getGameName(), account.getServerName() };
+
+        // define SQL types of the arguments
+        int[] typesA = new int[] { Types.INTEGER, Types.VARCHAR, Types.VARCHAR };
+
+        jdbcTemplate.update(insertSqlAccount, paramsA, typesA);
+
+        final ArrayList<Character> characters = account.getCharacters();
+        for (Character character : characters) {
+            Object[] paramsC = new Object[] { character.getName(), character.getlvl() };
+            int[] typesC = new int[] { Types.VARCHAR, Types.INTEGER };
+            jdbcTemplate.update(insertSqlAccountCharacters, paramsC, typesC);
+        }
+        return 1;
     }
 
 }

@@ -1,5 +1,4 @@
 let selectedAccounts = [];
-let server = false;
 
 export function setSelectedAccounts(accounts) {
   selectedAccounts = accounts;

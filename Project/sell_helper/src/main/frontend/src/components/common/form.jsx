@@ -84,7 +84,7 @@ class Form extends Component {
     const { data, error } = this.state;
     return (
       <SelectInput
-        options={options}
+        options={options} // the options
         name={name}
         label={label}
         value={data[name]}

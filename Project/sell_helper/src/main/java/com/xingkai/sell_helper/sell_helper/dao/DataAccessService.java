@@ -98,15 +98,43 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
     }
 
     /**
-     * @return ArrayList<Account>
+     * Use id in selected_accounts to find complete account info
+     * 
+     * @return ArrayList<Account> with id, characters, server
      */
     @Override
     public ArrayList<Account> getSelectedAccounts() {
         final String selectSql = "SELECT selected_account_id FROM selected_accounts";
-        return (ArrayList) jdbcTemplate.query(selectSql, (ResultSet resultSet, int i) -> {
+        List<Account> selectedAccountsID = jdbcTemplate.query(selectSql, (ResultSet resultSet, int i) -> {
             int id = Integer.parseInt(resultSet.getString("selected_account_id"));
             return new Account(id);
-        });// YOU MAY define a getAccount method
+        });
+
+        final String selectSqlAccount = "SELECT _id, game_name, server_name FROM account WHERE _id=?";
+        final String selectSqlC = "SELECT character_name,lvl FROM account_characters WHERE belong_account_id=?"; // pic
+        ArrayList<Account> result = new ArrayList<>();
+
+        for (Account account : selectedAccountsID) {
+            Object[] params = new Object[] { account.getId() };
+            // get characters for the account
+            ArrayList<Character> characters = (ArrayList<Character>) jdbcTemplate.query(selectSqlC, params,
+                    (ResultSet resultSet, int i) -> {
+                        String name = resultSet.getString("character_name");
+                        int lvl = Integer.parseInt(resultSet.getString("lvl"));
+
+                        return new Character(name, lvl);
+                    });
+            jdbcTemplate.query(selectSqlAccount, params, (ResultSet resultSet, int i) -> {
+                int id = Integer.parseInt(resultSet.getString("_id"));
+                String gameName = resultSet.getString("game_name");
+                String serverName = resultSet.getString("server_name");
+
+                return result.add(new Account(gameName, serverName, id, characters));
+            });
+
+        }
+
+        return result;
 
     }
 
@@ -149,13 +177,14 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
      */
     @Override
     public ArrayList<Game> getGames() {
-        final String selectSql = "SELECT game_name FROM game";
+        final String selectSql = "SELECT game_name, pic_url FROM game";
         final String selectServerName = "SELECT belong_to_game, server_name FROM game_servers WHERE belong_to_game=?";
         final String selectCharactersSql = "SELECT * FROM game_characters WHERE belong_to_game=?";
         // get game from table
         List<Game> games = jdbcTemplate.query(selectSql, (ResultSet resultSet, int i) -> {
             String name = resultSet.getString("game_name");
-            return new Game(name);
+            String picUrl = resultSet.getString("pic_url");
+            return new Game(name, picUrl);
         });// YOU MAY define a getAccount method
 
         ArrayList<Game> result = new ArrayList<>();
@@ -176,7 +205,8 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
                         int lvl = Integer.parseInt(resultSet.getString("lvl"));
                         return new Character(name, lvl);
                     });
-            result.add(new Game(game.getName(), (ArrayList<Server>) servers, (ArrayList<Character>) characters));
+            result.add(new Game(game.getName(), (ArrayList<Server>) servers, (ArrayList<Character>) characters,
+                    game.getPicUrl()));
 
         }
 
@@ -184,17 +214,44 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
     }
 
     /**
-     * @param gameName
-     * @return Optional<Game>
+     * get the game by its game name
+     * 
+     * @param gameName its game name
+     * @return Optional<Game> with their name, picURL, servers[]. characters
      */
     @Override
     public Optional<Game> getGameByName(String gameName) {
-        final String selectSql = "SELECT game_name FROM game where game_name=?";
+        final String selectSql = "SELECT game_name pic_url FROM game where game_name=?";
+        final String selectServerName = "SELECT belong_to_game, server_name FROM game_servers WHERE belong_to_game=?";
+        final String selectCharactersSql = "SELECT * FROM game_characters WHERE belong_to_game=?";
         Object[] params = new Object[] { gameName };
-        return jdbcTemplate.query(selectSql, params, (ResultSet resultSet, int i) -> {
+        List<Game> game = jdbcTemplate.query(selectSql, params, (ResultSet resultSet, int i) -> {
             String name = resultSet.getString("game_name");
-            return new Game(name);
-        }).stream().findFirst();
+            String picUrl = resultSet.getString("pic_url");
+            return new Game(name, picUrl);
+        });
+
+        ArrayList<Game> result = new ArrayList<>();
+
+        Object[] params1 = new Object[] { game.get(0).getName() };
+        // get servers of the game from table
+        List<Server> servers = jdbcTemplate.query(selectServerName, params1, (ResultSet resultSet, int i) -> {
+            String name = resultSet.getString("server_name");
+            String gameName1 = resultSet.getString("belong_to_game");
+            return new Server(name, gameName1);
+        });
+
+        // get characters of the game from table
+
+        List<Character> characters = jdbcTemplate.query(selectCharactersSql, params1, (ResultSet resultSet, int i) -> {
+            String name = resultSet.getString("character_name");
+            int lvl = Integer.parseInt(resultSet.getString("lvl"));
+            return new Character(name, lvl);
+        });
+        result.add(new Game(game.get(0).getName(), (ArrayList<Server>) servers, (ArrayList<Character>) characters,
+                game.get(0).getPicUrl()));
+
+        return result.stream().findFirst();
 
     }
 
@@ -261,7 +318,7 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
      */
     @Override
     public int clearTable() {
-        String deleteSql = "DELETE FROM selected_account";
+        String deleteSql = "DELETE FROM selected_accounts";
         jdbcTemplate.update(deleteSql);
         return 1;
     }
@@ -274,6 +331,7 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
      */
     @Override
     public int saveAccount(Account account) {
+
         final String insertSqlAccount = "INSERT INTO account(_id, game_name, server_name) VALUES(?,?,?)";
         final String insertSqlAccountCharacters = "INSERT INTO account_characters(character_name, lvl, belong_account_id) VALUES(?,?,?)";
         // define query arguments
@@ -286,8 +344,8 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
 
         final ArrayList<Character> characters = account.getCharacters();
         for (Character character : characters) {
-            Object[] paramsC = new Object[] { character.getName(), character.getlvl() };
-            int[] typesC = new int[] { Types.VARCHAR, Types.INTEGER };
+            Object[] paramsC = new Object[] { character.getName(), character.getlvl(), account.getId() };
+            int[] typesC = new int[] { Types.VARCHAR, Types.INTEGER, Types.INTEGER };
             jdbcTemplate.update(insertSqlAccountCharacters, paramsC, typesC);
         }
         return 1;

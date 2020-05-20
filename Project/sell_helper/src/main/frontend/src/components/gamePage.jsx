@@ -11,10 +11,11 @@ class GamePage extends Component {
   render() {
     return (
       <div>
-        {/* <SearchBar></SearchBar> */}
+        <div>请选择游戏</div>
         {this.props.games.map((game) => (
           <Link key={game.gameName} to={`/charactersPage/${game.gameName}`}>
-            <Game gameName={game.gameName} gamePicURL={game.gamePicURL} />
+            {console.log(game.picUrl)}
+            <Game gameName={game.gameName} gamePicUrl={game.picUrl} />
           </Link>
         ))}
       </div>

@@ -71,7 +71,6 @@
   display: flex;
   flex-direction: column;
   margin: 10px;
-  float: left;
 }
 
 .game_pho img {
@@ -88,7 +87,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 .float_left {
   float: left;
 }
@@ -100,8 +98,8 @@ span {
 }
 
 .input {
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -172,12 +170,33 @@ span {
   border-radius: 5px;
   margin: 5px 5px 5px 0;
 }
-.reset {
-  width: 50%;
-  height: 40px;
-  line-height: 40px;
-  margin: 30px auto;
-  text-align: center;
-  border: 1px solid #c4c4c4;
-  border-radius: 4px;
+.button {
+  margin: 15px 20px;
+  clear: both;
+  display: block;
+}
+.jumbotron-custom {
+  background-image: url("../pic/jumbotron.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+}
+.test {
+  margin: 5px, 5px;
+}
+
+.test img {
+  width: 65px;
+  height: 65px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  margin-left: 5px;
+}
+.test span {
+  padding: 5px;
+  border: 2px dotted black;
+  width: 110px;
+}
+ul li {
+  display: inline-block;
 }

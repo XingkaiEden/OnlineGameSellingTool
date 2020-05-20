@@ -8,16 +8,19 @@ public class Game {
     private final String name;
     private final ArrayList<Character> characters;
     private final ArrayList<Server> servers;
+    private final String picUrl;
 
     public Game(@JsonProperty("gameName") String name, @JsonProperty("servers") ArrayList<Server> servers,
-            ArrayList<Character> characters) {
+            ArrayList<Character> characters, String picUrl) {
         this.name = name;
         this.servers = servers;
         this.characters = characters;
+        this.picUrl = picUrl;
     }
 
-    public Game(String name) {
+    public Game(String name, String picUrl) {
         this.name = name;
+        this.picUrl = picUrl;
         this.servers = null;
         this.characters = new ArrayList<>();
 
@@ -39,5 +42,9 @@ public class Game {
 
     public ArrayList<Character> getCharacters() {
         return characters;
+    }
+
+    public String getPicUrl() {
+        return picUrl;
     }
 }

@@ -1,33 +1,36 @@
 import React, { Component } from "react";
 import InfoBar from "./common/infoBar";
 import Character from "./common/character";
-import {
-  getSelectedAccounts,
-  getServer,
-} from "./services/fakeSelectedDataService";
-
+import { getSelectedAccounts } from "./services/selectedDataService";
+import { getServer, getTempStorage } from "./services/tempserver";
+let counter = 1;
 class ResultPage extends Component {
   state = {};
+
   constructor(props) {
     super(props);
-    const accounts = getSelectedAccounts();
-    const server = getServer();
-    this.state = { accounts, server };
+    // const accounts = this.props.selectedAccounts;
+    const serverName = getServer();
+    this.state = { accounts: [], serverName };
+  }
+  async componentDidMount() {
+    const { data: accounts } = await getSelectedAccounts();
+    this.setState({ accounts });
   }
 
-  highLvlCharsCounter = (account) => {
-    let counter = 0;
-    account.characters.map((c) => {
-      if (c.lvl === 3) counter += 1;
-    });
+  // highLvlCharsCounter = (account) => {
+  //   let counter = 0;
+  //   account.characters.map((c) => {
+  //     if (c.lvl === 3) counter += 1;
+  //   });
 
-    return counter;
-  };
+  //   return counter;
+  // };
   conditionalRender = () => {
     const { accounts } = this.state;
-    if (!this.state.server) {
+    if (!this.state.serverName) {
       return <span>请选择服务器</span>;
-    } else if (this.state.accounts.length === 0) {
+    } else if (accounts.length === 0) {
       return <span>无查询结果</span>;
     } else {
       return (
@@ -45,16 +48,17 @@ class ResultPage extends Component {
                 <div key={account._id} className="">
                   <InfoBar
                     accountNO={account._id}
-                    server={account.server}
-                    highLvlChars={this.highLvlCharsCounter(account)}
+                    server={account.serverName}
+                    // highLvlChars={this.highLvlCharsCounter(account)}
                   />
 
                   <div className="game-img jusc_start display_flex">
+                    {console.log(account)}
                     {account.characters.map((character) => (
                       <Character
                         key={character.name}
                         name={character.name}
-                        picURL={character.picURL}
+                        // picURL={character.picURL}
                         lvl={character.lvl}
                         selectable={false}
                       />
@@ -69,7 +73,11 @@ class ResultPage extends Component {
     }
   };
   render() {
-    return <div>{this.conditionalRender()}</div>;
+    counter++;
+    {
+      console.log(this.state.accounts);
+    }
+    return counter > 2 && <div>{this.conditionalRender()}</div>;
   }
 }
 

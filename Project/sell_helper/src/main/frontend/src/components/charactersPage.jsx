@@ -8,21 +8,30 @@ import SelectBox from "./common/selectBox";
 import UnselectBox from "./common/unselectBox";
 import {
   setSelectedAccounts,
-  setServer,
-} from "./services/fakeSelectedDataService";
-import { getAccounts } from "./services/fakeAccountsService";
+  getSelectedAccounts,
+} from "./services/selectedDataService";
+import { setServer, setTempStoreage } from "./services/tempserver";
+import { getAccounts } from "./services/accountsService";
+import { getGames } from "./services/gameService";
 class CharactersPage extends Component {
   state = {};
 
   constructor(props) {
     super(props);
     const currentGameName = this.props.match.params.gameName;
+
     this.state = {
+      games: [],
       selectedCharacters: [],
       selectedServer: "",
       currentGameName,
     };
   }
+
+  // async componentDidMount() {
+  //   const { data: games } = await getGames();
+  //   this.setState({ games });
+  // }
 
   getCurrentGameNameIdx = (currentGameName) => {
     let result,
@@ -81,48 +90,60 @@ class CharactersPage extends Component {
   };
 
   handleReset = () => {
-    window.location.reload();
+    //do nothing
   };
 
-  handleSearch = () => {
+  handleSearch = async () => {
     //handle selected characters, put them into server
     const characterList = [...this.state.selectedCharacters];
     const server = this.state.selectedServer;
     const gameName = this.props.match.params.gameName;
     if (server === "") setServer(false);
     else setServer(true);
-    const searchedAccounts = getAccounts(gameName, server, characterList);
-    setSelectedAccounts(searchedAccounts);
+    const { data: searchedAccounts } = await getAccounts(
+      gameName,
+      server,
+      characterList
+    );
+    console.log(searchedAccounts);
+    if (searchedAccounts) {
+      await setSelectedAccounts(searchedAccounts);
+      const { data: accounts } = await getSelectedAccounts();
+      this.props.tempStore(accounts);
+    }
   };
   render() {
     const currentGameIdx = this.getCurrentGameNameIdx(
       this.state.currentGameName
     );
-
+    // console.log(this.state);
     return (
       <div>
-        {/* <form action="" className="form-inline">
-          <SearchBar className=""></SearchBar>
-          <SearchBar></SearchBar>
-        </form> */}
         <span>
           <span>游戏区服</span>
-          {this.props.games[currentGameIdx].servers.map((server) =>
-            this.renderBox(server)
+          {this.props.games[currentGameIdx].serverName.map((server) =>
+            this.renderBox(server.name)
           )}
         </span>
-        {this.props.games[currentGameIdx].characters.map((character) => (
-          <Character
-            key={character.name}
-            onSelect={this.handleSelect}
-            name={character.name}
-            lvl={character.lvl}
-            picURL={character.picURL}
-            selectable={true}
-          />
-        ))}
+        <ul>
+          <div className="game_img ">
+            {this.props.games[currentGameIdx].characters.map((character) => (
+              <li className="inline" key={character.name}>
+                <Character
+                  onSelect={this.handleSelect}
+                  name={character.name}
+                  lvl={character.lvl}
+                  picURL={character.picURL}
+                  selectable={true}
+                />
+              </li>
+            ))}
+          </div>
+        </ul>
 
-        <Button value="重置" onClick={this.handleReset} />
+        <Link to="/">
+          <Button value="重置" onClick={this.handleReset} />
+        </Link>
 
         <Link to="/resultPage">
           <Button value="搜索" onClick={this.handleSearch} />

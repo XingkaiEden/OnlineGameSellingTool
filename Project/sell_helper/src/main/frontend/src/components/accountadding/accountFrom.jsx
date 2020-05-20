@@ -1,27 +1,25 @@
 import React from "react";
 import Form from "../common/form";
 import Joi from "joi-browser";
-import { saveAccount } from "../services/fakeAccountsService";
+import { saveAccount } from "../services/accountsService";
 import { getTempStorage } from "../services/tempserver";
-
+import { password } from "../../password.json";
 class AccountFrom extends Form {
   state = {
     data: { _id: "", gameName: "", serverName: "", characters: [] },
     error: {},
   };
-
-  componentDidMount() {
+  constructor(props) {
+    super(props);
     const gameName = getTempStorage().currentGameName;
     const characters = getTempStorage().selectedCharacters;
-    this.setState({
-      data: {
-        _id: "",
-        gameName: gameName,
-        serverName: "",
-        characters: characters,
-      },
-    });
+
+    this.state = {
+      data: { _id: "", gameName, serverName: "", characters },
+      error: {},
+    };
   }
+
   schema = {
     _id: Joi.number(),
     serverName: Joi.string().required().label("所属服务器"),
@@ -30,19 +28,27 @@ class AccountFrom extends Form {
     //在这里处理表格提交
     console.log(this.state.data); //test
     // await saveMovie(this.state.data);
-    // this.props.history.push("/movies");
+
     // console.log(this.state.data)
 
-    saveAccount(this.state.data);
+    await saveAccount(this.state.data);
+    this.props.history.push("/" + password);
   };
 
   render() {
+    const currentGame = this.props.games.filter(
+      (g) => g.gameName === this.state.data.gameName
+    );
+    const servers = [];
+    currentGame[0].serverName.map((s) => {
+      servers.push(s.name);
+    });
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("_id", "账号ID")}
 
-          {this.renderInput("serverName", "所属服务器")}
+          {this.renderSelectInput("serverName", "所属服务器", servers)}
           {this.renderButton("保存")}
         </form>
       </div>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+const images = require.context("../pic/山海镜花", true);
 class Character extends Component {
   state = {
     isChecked: false,
@@ -13,10 +13,11 @@ class Character extends Component {
 
   conditionalRender = () => {
     const { picURL, lvl, name, onSelect, selectable } = this.props;
-    if (this.props.selectable)
+    let img_src = images(`./${name}.png`);
+    if (selectable)
       return (
-        <div className="game_pho">
-          <img src={picURL} />
+        <div className="test">
+          <img src={img_src} onChange={this.toggleChange} />
           <input
             type="checkbox"
             className="input"
@@ -26,15 +27,13 @@ class Character extends Component {
             id="checkID"
           />
           <label htmlFor="checkID"></label>
-          <span className="font_size_14">
-            {lvl}★{name}
-          </span>
+          <span className="font_size_14">{name}</span>
         </div>
       );
     else
       return (
         <div className="game_pho">
-          <img src={picURL} />
+          <img src={img_src} />
           <span className="font_size_14">
             {lvl}★{name}
           </span>

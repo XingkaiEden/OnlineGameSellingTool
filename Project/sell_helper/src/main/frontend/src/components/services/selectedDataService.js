@@ -5,9 +5,13 @@ let server = false;
 
 export function setSelectedAccounts(accounts) {
   http.delete(apiEndpoint + "/selectedaccount");
-  return accounts.forEach((account) => {
-    http.post(apiEndpoint + "/selectedaccount", account);
-  });
+  if (Array.isArray(accounts)) {
+    return accounts.map((account) => {
+      http.post(apiEndpoint + "/selectedaccount", account);
+    });
+  } else {
+    return http.post(apiEndpoint + "/selectedaccount", accounts);
+  }
 }
 export function getSelectedAccounts() {
   return http.get(apiEndpoint + "/selectedaccount");

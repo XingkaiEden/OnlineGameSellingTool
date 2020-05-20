@@ -5,26 +5,28 @@ import Button from "../common/button";
 import Character from "../common/character";
 import Form from "../common/form";
 
-import { getGames } from "../services/fakeGameService";
+import { getGames } from "../services/gameService";
 import { setTempStoreage } from "../services/tempserver";
+
 class SelectCharacters extends Form {
   state = {};
   schema = {};
   constructor(props) {
     super(props);
     const currentGameName = this.props.match.params.gameName;
-    const games = getGames();
+
     this.state = {
       selectedCharacters: [],
-      games,
+      games: [],
       currentGameName,
     };
   }
+
   /************************************ */
   getCurrentGameNameIdx = (currentGameName) => {
     let result,
       counter = 0;
-    this.state.games.forEach((element) => {
+    this.props.games.forEach((element) => {
       if (element.gameName === currentGameName) result = counter;
       else counter += 1;
     });
@@ -55,7 +57,7 @@ class SelectCharacters extends Form {
   };
   /******************************** */
   handleReset = () => {
-    window.location.reload();
+    //do nothing
   };
 
   handleSearch = () => {
@@ -66,22 +68,26 @@ class SelectCharacters extends Form {
     const currentGameIdx = this.getCurrentGameNameIdx(
       this.state.currentGameName
     );
+    console.log(this.state.currentGameName);
     return (
       <div>
-        {this.state.games[currentGameIdx].characters.map((character) => (
-          <Character
-            key={character.name}
-            onSelect={this.handleSelect}
-            name={character.name}
-            lvl={character.lvl}
-            picURL={character.picURL}
-            selectable={true}
-          />
-        ))}
+        <ul>
+          {this.props.games[currentGameIdx].characters.map((character) => (
+            <li key={character.name}>
+              <Character
+                onSelect={this.handleSelect}
+                name={character.name}
+                lvl={character.lvl}
+                picURL={character.picURL}
+                selectable={true}
+              />
+            </li>
+          ))}
+        </ul>
 
         <Button value="重置" onClick={this.handleReset} />
 
-        <Link to="/accountForm">
+        <Link to={`/accountForm`}>
           <Button value="保存" onClick={this.handleSearch} />
         </Link>
       </div>

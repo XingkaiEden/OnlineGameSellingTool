@@ -16,11 +16,11 @@ public class Account {
     private final ArrayList<Character> characters;
 
     public Account(@JsonProperty("gameName") String gameName, @JsonProperty("serverName") String serverName,
-            @JsonProperty("_id") int id) {
+            @JsonProperty("_id") int id, ArrayList<Character> characters) {
         this.id = id;
         this.gameName = gameName;
         this.serverName = serverName;
-        characters = new ArrayList<>();
+        this.characters = characters;
     }
 
     public Account(int id) {

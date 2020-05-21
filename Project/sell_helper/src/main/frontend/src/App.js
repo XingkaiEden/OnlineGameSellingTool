@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
+
 import "./App.css";
 
 import { Route, Switch, Redirect } from "react-router-dom";
@@ -7,8 +7,8 @@ import WelcomePic from "./components/common/welcome";
 import CharactersPage from "./components/charactersPage";
 import ResultPage from "./components/resultPage";
 import GamePage from "./components/gamePage";
-import { getGame, getGames } from "./components/services/gameService";
-import { getSelectedAccounts } from "./components/services/selectedDataService";
+import { getGames } from "./components/services/gameService";
+
 import NavBar from "./components/common/navBar";
 
 import SelectGame from "./components/accountadding/selectGame";
@@ -22,21 +22,18 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      accounts: [],
       games: [],
     };
   }
-  async componentWillMount() {
+  async componentDidMount() {
     //pending > resolved (seccess) OR rejected (failure)
     const { data: games } = await getGames();
 
     this.setState({ games });
   }
-  selectedAccountsTempStrage = (accounts) => {
-    this.setState({ accounts });
-  };
+
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     counter++;
     return (
       counter > 2 && (
@@ -63,24 +60,12 @@ class App extends Component {
               <Route
                 path="/charactersPage/:gameName"
                 render={(props) => (
-                  <CharactersPage
-                    games={this.state.games}
-                    tempStore={this.selectedAccountsTempStrage}
-                    {...props}
-                  />
+                  <CharactersPage games={this.state.games} {...props} />
                 )}
               />
               <Route path="/charactersPage/" component={CharactersPage} />
 
-              <Route
-                path="/resultPage"
-                render={(props) => (
-                  <ResultPage
-                    selectedAccounts={this.state.accounts}
-                    {...props}
-                  />
-                )}
-              />
+              <Route path="/resultPage" component={ResultPage} />
               <Route
                 path="/"
                 render={(props) => (

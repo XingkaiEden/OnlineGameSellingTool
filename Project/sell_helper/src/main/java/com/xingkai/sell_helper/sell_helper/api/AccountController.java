@@ -1,7 +1,6 @@
 package com.xingkai.sell_helper.sell_helper.api;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 import com.xingkai.sell_helper.sell_helper.model.Account;
 import com.xingkai.sell_helper.sell_helper.model.Character;
@@ -28,7 +27,7 @@ public class AccountController {
     }
 
     @GetMapping(path = "{gameName}/{server}/{values}")
-    public Optional<Account> getAccountsForGame(@PathVariable("gameName") String gameName,
+    public ArrayList<Account> getAccountsForGame(@PathVariable("gameName") String gameName,
             @PathVariable("server") String server, @PathVariable("values") String characters) {
 
         // we need an arraylist of characters, but the variable is passed from

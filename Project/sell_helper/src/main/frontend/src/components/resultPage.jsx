@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import InfoBar from "./common/infoBar";
 import Character from "./common/character";
 import { getSelectedAccounts } from "./services/selectedDataService";
-import { getServer, getTempStorage } from "./services/tempserver";
+import { getSelectedServerName } from "./services/selectedDataService";
 let counter = 1;
 class ResultPage extends Component {
   state = {};
@@ -10,12 +10,15 @@ class ResultPage extends Component {
   constructor(props) {
     super(props);
     // const accounts = this.props.selectedAccounts;
-    const serverName = getServer();
-    this.state = { accounts: [], serverName };
+
+    this.state = { accounts: [], SelectedServerName: "" };
   }
   async componentDidMount() {
     const { data: accounts } = await getSelectedAccounts();
-    this.setState({ accounts });
+    const { data: SelectedServerName } = await getSelectedServerName();
+    console.log("I GOT THE DATA!", accounts, SelectedServerName);
+    this.setState({ accounts, SelectedServerName });
+    console.log("state outside render", this.state);
   }
 
   // highLvlCharsCounter = (account) => {
@@ -27,8 +30,8 @@ class ResultPage extends Component {
   //   return counter;
   // };
   conditionalRender = () => {
-    const { accounts } = this.state;
-    if (!this.state.serverName) {
+    const { accounts, SelectedServerName } = this.state;
+    if (SelectedServerName === "noserver=") {
       return <span>请选择服务器</span>;
     } else if (accounts.length === 0) {
       return <span>无查询结果</span>;
@@ -53,7 +56,6 @@ class ResultPage extends Component {
                   />
 
                   <div className="game-img jusc_start display_flex">
-                    {console.log(account)}
                     {account.characters.map((character) => (
                       <Character
                         key={character.name}
@@ -74,10 +76,17 @@ class ResultPage extends Component {
   };
   render() {
     counter++;
-    {
-      console.log(this.state.accounts);
-    }
-    return counter > 2 && <div>{this.conditionalRender()}</div>;
+
+    console.log("state inside render", this.state);
+
+    return (
+      counter > 3 && (
+        <div>
+          {console.log("counter:" + counter)}
+          {this.conditionalRender()}
+        </div>
+      )
+    );
   }
 }
 

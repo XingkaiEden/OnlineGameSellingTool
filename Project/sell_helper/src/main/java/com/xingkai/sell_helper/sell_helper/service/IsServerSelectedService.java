@@ -1,7 +1,6 @@
 package com.xingkai.sell_helper.sell_helper.service;
 
 import com.xingkai.sell_helper.sell_helper.dao.IsServerSelectedDao;
-import com.xingkai.sell_helper.sell_helper.model.ServerIsSelected;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,11 +15,15 @@ public class IsServerSelectedService {
         this.isServerSelectedDao = isServerSelectedDao;
     }
 
-    public int setServerIsSelected(ServerIsSelected isSelected) {
-        return isServerSelectedDao.setServerIsSelected(isSelected);
+    public int setServerIsSelected(String serverName) {
+        return isServerSelectedDao.setSelectedServerName(serverName);
     };
 
-    public boolean getServerIsSelected() {
-        return isServerSelectedDao.getServerIsSelected();
+    public String getServerIsSelected() {
+        return isServerSelectedDao.getSelectedServerName();
     };
+
+    public int clearSelectedServerTable() {
+        return isServerSelectedDao.clearSelectedServerTable();
+    }
 }

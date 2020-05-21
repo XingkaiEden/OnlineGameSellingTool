@@ -34,9 +34,7 @@ class Character extends Component {
       return (
         <div className="game_pho">
           <img src={img_src} />
-          <span className="font_size_14">
-            {lvl}★{name}
-          </span>
+          <span className="font_size_14">{name}</span>
         </div>
       );
   };

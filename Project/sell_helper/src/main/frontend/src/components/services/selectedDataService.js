@@ -17,10 +17,17 @@ export function getSelectedAccounts() {
   return http.get(apiEndpoint + "/selectedaccount");
 }
 
-export function getServer() {
+export function getSelectedServerName() {
   return http.get(apiEndpoint + "/isserverselected");
 }
 
-export function setServer(s) {
+export function setSelectedServerName(s) {
   return http.post(apiEndpoint + "/isserverselected", s);
+}
+
+export function clearSelectedAccounts() {
+  return http.delete(apiEndpoint + "/selectedaccount");
+}
+export function clearSelectedServer() {
+  return http.delete(apiEndpoint + "/isserverselected");
 }

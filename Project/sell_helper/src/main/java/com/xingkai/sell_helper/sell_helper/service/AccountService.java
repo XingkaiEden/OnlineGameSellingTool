@@ -20,7 +20,7 @@ public class AccountService {
         this.accountDao = accountDao;
     }
 
-    public Optional<Account> getAccountsForGame(String gameName, String server, ArrayList<Character> characters) {
+    public ArrayList<Account> getAccountsForGame(String gameName, String server, ArrayList<Character> characters) {
         return accountDao.getAccountsForGame(gameName, server, characters);
     }
 

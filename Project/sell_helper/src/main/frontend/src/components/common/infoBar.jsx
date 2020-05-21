@@ -7,7 +7,7 @@ class InfoBar extends Component {
       <div className="info display_flex jusc_around">
         <span>编号： {accountNO}</span>
         <span>服务器： {server}</span>
-        <span>3星： {highLvlChars}</span>
+        {/* <span>3星： {highLvlChars}</span> */}
       </div>
     );
   }

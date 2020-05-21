@@ -1,18 +1,17 @@
 import React, { Component } from "react";
-import SearchBar from "./common/searchBar";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Button from "./common/button";
 import Character from "./common/character";
-import SelectBlock from "./common/selectBlock";
+
 import SelectBox from "./common/selectBox";
 import UnselectBox from "./common/unselectBox";
+import { setSelectedAccounts } from "./services/selectedDataService";
 import {
-  setSelectedAccounts,
-  getSelectedAccounts,
+  setSelectedServerName,
+  clearSelectedAccounts,
+  clearSelectedServer,
 } from "./services/selectedDataService";
-import { setServer, setTempStoreage } from "./services/tempserver";
 import { getAccounts } from "./services/accountsService";
-import { getGames } from "./services/gameService";
 class CharactersPage extends Component {
   state = {};
 
@@ -94,23 +93,30 @@ class CharactersPage extends Component {
   };
 
   handleSearch = async () => {
+    //clear selected account table in database first
+    const { data: ac } = await clearSelectedAccounts();
+    const { data: sc } = await clearSelectedServer();
+    console.log("status:", ac, sc);
     //handle selected characters, put them into server
     const characterList = [...this.state.selectedCharacters];
-    const server = this.state.selectedServer;
+    const serverName = this.state.selectedServer;
     const gameName = this.props.match.params.gameName;
-    if (server === "") setServer(false);
-    else setServer(true);
+    if (serverName === "") {
+      await setSelectedServerName("noserver");
+      return window.location.assign("/resultPage");
+    } else await setSelectedServerName(serverName);
+    if (characterList.length === 0)
+      return window.location.assign("/resultPage");
     const { data: searchedAccounts } = await getAccounts(
       gameName,
-      server,
+      serverName,
       characterList
     );
-    console.log(searchedAccounts);
     if (searchedAccounts) {
+      console.log(this.state);
       await setSelectedAccounts(searchedAccounts);
-      const { data: accounts } = await getSelectedAccounts();
-      this.props.tempStore(accounts);
     }
+    return window.location.assign("/resultPage");
   };
   render() {
     const currentGameIdx = this.getCurrentGameNameIdx(
@@ -145,9 +151,7 @@ class CharactersPage extends Component {
           <Button value="重置" onClick={this.handleReset} />
         </Link>
 
-        <Link to="/resultPage">
-          <Button value="搜索" onClick={this.handleSearch} />
-        </Link>
+        <Button value="搜索" onClick={this.handleSearch} />
       </div>
     );
   }

@@ -1,10 +1,10 @@
 package com.xingkai.sell_helper.sell_helper.api;
 
-import com.xingkai.sell_helper.sell_helper.model.ServerIsSelected;
 import com.xingkai.sell_helper.sell_helper.service.IsServerSelectedService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,12 +23,17 @@ public class IsServerSelectedController {
     }
 
     @PostMapping
-    public int setServerIsSelected(@RequestBody ServerIsSelected isSelected) {
-        return IsServerSelectedService.setServerIsSelected(isSelected);
+    public int setServerIsSelected(@RequestBody String serverName) {
+        return IsServerSelectedService.setServerIsSelected(serverName);
     };
 
     @GetMapping
-    public boolean getServerIsSelected() {
+    public String getServerIsSelected() {
         return IsServerSelectedService.getServerIsSelected();
     };
+
+    @DeleteMapping
+    public int clearSelectedServerTable() {
+        return IsServerSelectedService.clearSelectedServerTable();
+    }
 }

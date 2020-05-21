@@ -4,6 +4,7 @@ import Joi from "joi-browser";
 import { saveAccount } from "../services/accountsService";
 import { getTempStorage } from "../services/tempserver";
 import { password } from "../../password.json";
+// let counter = 1;
 class AccountFrom extends Form {
   state = {
     data: { _id: "", gameName: "", serverName: "", characters: [] },
@@ -43,7 +44,9 @@ class AccountFrom extends Form {
     currentGame[0].serverName.map((s) => {
       servers.push(s.name);
     });
+    // counter++;
     return (
+      // counter > 2 && (
       <div>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("_id", "账号ID")}

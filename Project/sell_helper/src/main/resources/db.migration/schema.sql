@@ -1,4 +1,5 @@
-DROP TABLE is_server_selected cascade;
+
+-- DROP TABLE selected_server cascade;
 DROP TABLE game cascade;
 DROP TABLE game_servers cascade;
 DROP TABLE game_characters cascade;
@@ -8,9 +9,9 @@ DROP TABLE selected_accounts cascade;
 
 
 
-CREATE TABLE is_server_selected
+CREATE TABLE selected_server
 (
-    is_selected BOOLEAN NOT NULL PRIMARY KEY
+    server_name VARCHAR(100) NOT NULL PRIMARY KEY
     -- primary key column
     -- specify more columns here
 );

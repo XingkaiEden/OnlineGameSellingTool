@@ -68,7 +68,6 @@ class SelectCharacters extends Form {
     const currentGameIdx = this.getCurrentGameNameIdx(
       this.state.currentGameName
     );
-    console.log(this.state.currentGameName);
     return (
       <div>
         <ul>

@@ -9,7 +9,6 @@ import java.util.Optional;
 import com.xingkai.sell_helper.sell_helper.model.Account;
 import com.xingkai.sell_helper.sell_helper.model.Character;
 import com.xingkai.sell_helper.sell_helper.model.Game;
-import com.xingkai.sell_helper.sell_helper.model.ServerIsSelected;
 
 import com.xingkai.sell_helper.sell_helper.model.Server;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,50 +30,68 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
      * @return int
      */
     @Override
-    public int setServerIsSelected(ServerIsSelected isSelected) {
+    public int setSelectedServerName(String serverName) {
         // clear all record in this table
-        jdbcTemplate.update("DELETE FROM is_server_selected");
-        final String sql = "INSERT INTO is_server_selected (is_selected) VALUES (?)";
+        jdbcTemplate.update("DELETE FROM selected_server");
+        final String sql = "INSERT INTO selected_server (server_name) VALUES (?)";
         // define query arguments
-        Object[] params = new Object[] { isSelected.getServerStatus() };
+        Object[] params = new Object[] { serverName };
 
         // define SQL types of the arguments
-        int[] types = new int[] { Types.BOOLEAN };
+        int[] types = new int[] { Types.VARCHAR };
 
         jdbcTemplate.update(sql, params, types);
         return 1;
     }
 
     /**
-     * @return boolean
+     * get the name of server which is currently selected
+     * 
+     * @return String the name of the server
      */
     @Override
-    public boolean getServerIsSelected() {
-        // check if a default status in table (false)
-        final String selectSql = "SELECT is_selected FROM is_server_selected";
-        List<ServerIsSelected> statusList = jdbcTemplate.query(selectSql, (ResultSet resultSet, int i) -> {
-
-            boolean status = resultSet.getString("is_selected").equals("t") ? true : false;
-            return new ServerIsSelected(status);
+    public String getSelectedServerName() {
+        final String selectSql = "SELECT server_name FROM selected_server";
+        List<String> serverName = jdbcTemplate.query(selectSql, (ResultSet resultSet, int i) -> {
+            String name = resultSet.getString("server_name");
+            return name;
         });
-
-        // if not, insert false
-
-        if (statusList.size() == 0) {
-            final String insertSql = "INSERT INTO is_server_selected (is_selected) VALUES (?)";
-            // define query arguments
-            Object[] params = new Object[] { false };
-
-            // define SQL types of the arguments
-            int[] types = new int[] { Types.BOOLEAN };
-            jdbcTemplate.update(insertSql, params, types);
-            return false;
-        } else {
-            return statusList.get(0).getServerStatus();
-        }
-        // otherwise return is
-
+        return serverName.get(0);
     }
+
+    // /**
+    // * @return boolean
+    // */
+    // @Override
+    // public boolean getServerIsSelected() {
+    // // check if a default status in table (false)
+    // final String selectSql = "SELECT is_selected FROM is_server_selected";
+    // List<ServerIsSelected> statusList = jdbcTemplate.query(selectSql, (ResultSet
+    // resultSet, int i) -> {
+
+    // boolean status = resultSet.getString("is_selected").equals("t") ? true :
+    // false;
+    // return new ServerIsSelected(status);
+    // });
+
+    // // if not, insert false
+
+    // if (statusList.size() == 0) {
+    // final String insertSql = "INSERT INTO is_server_selected (is_selected) VALUES
+    // (?)";
+    // // define query arguments
+    // Object[] params = new Object[] { false };
+
+    // // define SQL types of the arguments
+    // int[] types = new int[] { Types.BOOLEAN };
+    // jdbcTemplate.update(insertSql, params, types);
+    // return false;
+    // } else {
+    // return statusList.get(0).getServerStatus();
+    // }
+    // // otherwise return is
+
+    // }
 
     /**
      * insert an account into selected accounts table
@@ -266,7 +283,7 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
      *         for update into selected account table which only have account's id
      */
     @Override
-    public Optional<Account> getAccountsForGame(String gameName, String server, ArrayList<Character> characters) {
+    public ArrayList<Account> getAccountsForGame(String gameName, String server, ArrayList<Character> characters) {
         // first use game's name and server name to find out a smaller set of accounts
         // in account table
         // second, find out who contains the characters list in the set of accounts. Do
@@ -286,9 +303,10 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
         // characters, store them into a List<Character> accountCharacters
         // 2. now implement an algorithm finding if the list contain all elements in
         // characters list.
-        ArrayList<Character> tempList = (ArrayList<Character>) characters.clone();
+
         List<Account> results = new ArrayList<>();
         for (Account account : accountFirstSet) {
+            ArrayList<Character> tempList = (ArrayList<Character>) characters.clone();
             final String sql = "SELECT character_name, lvl FROM account_characters WHERE belong_account_id=?";
             Object[] params1 = new Object[] { account.getId() };
             List<Character> accountCharacters = jdbcTemplate.query(sql, params1, (ResultSet resultSet, int i) -> {
@@ -310,15 +328,29 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
             }
         }
 
-        return results.stream().findAny();
+        return (ArrayList<Account>) results;
     }
 
     /**
+     * clear records in selected_accounts table
+     * 
      * @return int
      */
     @Override
     public int clearTable() {
         String deleteSql = "DELETE FROM selected_accounts";
+        jdbcTemplate.update(deleteSql);
+        return 1;
+    }
+
+    /**
+     * clear records in selected_server table
+     * 
+     * @return int
+     */
+    @Override
+    public int clearSelectedServerTable() {
+        String deleteSql = "DELETE FROM selected_server";
         jdbcTemplate.update(deleteSql);
         return 1;
     }

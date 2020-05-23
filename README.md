@@ -23,7 +23,7 @@ Make sure postgresql and npm have installed on your computer
 
    - Start Frontend
     - go to OnlineGameSellingTool/Project/sell_helper/src/main/frontend
-    - In this folder, run comand:
+    - In this folder, run command:
     ```
     npm start
     ```

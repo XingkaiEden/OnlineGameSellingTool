@@ -19,11 +19,11 @@ It is still under maintance and develpment.
 Make sure postgresql and npm have installed on your computer
 
   - Start Backend
-    - Run this file OnlineGameSellingTool/Project/sell_helper/src/main/java/com/xingkai/sell_helper/sell_helper/DemoApplication.java
+    - Run this file ```OnlineGameSellingTool/Project/sell_helper/src/main/java/com/xingkai/sell_helper/sell_helper/DemoApplication.java```
 
    - Start Frontend
-    - go to OnlineGameSellingTool/Project/sell_helper/src/main/frontend
-    - In this folder, run command:
+      - go to ```OnlineGameSellingTool/Project/sell_helper/src/main/frontend```
+      - In this folder, run command:
     ```
     npm start
     ```

@@ -1,6 +1,7 @@
 package com.xingkai.sell_helper.sell_helper.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.xingkai.sell_helper.sell_helper.dao.AccountDao;
@@ -26,6 +27,16 @@ public class AccountService {
 
     public int saveAccount(Account account) {
         return accountDao.saveAccount(account);
+    }
+
+    public int deleteAccount(int id) {
+        return accountDao.deleteAccount(id);
+
+    }
+
+    public List<Account> getAccounts() {
+        return accountDao.getAccounts();
+
     }
 
 }

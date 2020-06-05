@@ -10,11 +10,14 @@ import GamePage from "./components/gamePage";
 import { getGames } from "./components/services/gameService";
 
 import NavBar from "./components/common/navBar";
-
-import SelectGame from "./components/accountadding/selectGame";
-import AccountFrom from "./components/accountadding/accountFrom";
-import SelectCharacters from "./components/accountadding/selectCharacters";
+import auth from "./components/services/authService";
+import SelectGame from "./components/sellerManagmentSystem/accountadding/selectGame";
+import AccountFrom from "./components/sellerManagmentSystem/accountadding/accountFrom";
+import SelectCharacters from "./components/sellerManagmentSystem/accountadding/selectCharacters";
 import { password } from "./password.json";
+import Accounts from "./components/sellerManagmentSystem/accounts";
+import LoginForm from "./components/sellerManagmentSystem/loginForm";
+import Logout from "./components/sellerManagmentSystem/logout";
 let counter = 1;
 class App extends Component {
   state = {};
@@ -28,21 +31,27 @@ class App extends Component {
   async componentDidMount() {
     //pending > resolved (seccess) OR rejected (failure)
     const { data: games } = await getGames();
+    const user = auth.getCurrentUserJWT();
 
-    this.setState({ games });
+    this.setState({ games, user });
   }
 
   render() {
     // console.log(this.state);
+    const { user } = this.state;
     counter++;
     return (
       counter > 2 && (
         <React.Fragment>
-          <NavBar></NavBar>
+          <NavBar user={user} />
           <div className="container">
             <WelcomePic />
             <Switch>
-              <Route path={`/${password}`} component={SelectGame} />
+              {/* <Route path={`/${password}`} component={SelectGame} /> */}
+              <Route path="/accounts/new" component={SelectGame} />
+              <Route path="/login" component={LoginForm} />
+              <Route path="/logout" component={Logout} />
+
               <Route
                 path="/accountForm"
                 render={(props) => (
@@ -66,6 +75,12 @@ class App extends Component {
               <Route path="/charactersPage/" component={CharactersPage} />
 
               <Route path="/resultPage" component={ResultPage} />
+              <Route
+                path="/accounts"
+                render={(props) => (
+                  <Accounts {...props} user={this.state.user}></Accounts>
+                )}
+              />
               <Route
                 path="/"
                 render={(props) => (

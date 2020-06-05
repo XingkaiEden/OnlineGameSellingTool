@@ -1,6 +1,7 @@
 package com.xingkai.sell_helper.sell_helper.api;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.xingkai.sell_helper.sell_helper.model.Account;
 import com.xingkai.sell_helper.sell_helper.model.Character;
@@ -8,6 +9,7 @@ import com.xingkai.sell_helper.sell_helper.service.AccountService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,6 +52,18 @@ public class AccountController {
     @PostMapping
     public int saveAccount(@RequestBody Account account) {
         return accountService.saveAccount(account);
+    }
+
+    @DeleteMapping(path = "{id}")
+    public int deleteAccount(@PathVariable("id") int id) {
+        return accountService.deleteAccount(id);
+
+    }
+
+    @GetMapping
+    public List<Account> getAccounts() {
+        return accountService.getAccounts();
+
     }
 
 }

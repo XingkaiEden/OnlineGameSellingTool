@@ -23,6 +23,7 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
     @Autowired
     public DataAccessService(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+
     }
 
     /**
@@ -42,6 +43,7 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
 
         jdbcTemplate.update(sql, params, types);
         return 1;
+
     }
 
     /**
@@ -112,6 +114,7 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
         jdbcTemplate.update(insertSql, params, types);
 
         return 1;
+
     }
 
     /**
@@ -381,6 +384,46 @@ public class DataAccessService implements AccountDao, GameDao, SelectedAccountDa
             jdbcTemplate.update(insertSqlAccountCharacters, paramsC, typesC);
         }
         return 1;
+    }
+
+    /**
+     * delete an selected account
+     * 
+     * @param account
+     * @return int
+     */
+    @Override
+    public int deleteAccount(int id) {
+        final String deleteSqlAccount = "DELETE FROM account WHERE _id=?";
+        final String deleteSqlAccountCharacters = "DELETE FROM account_characters WHERE belong_account_id=?";
+
+        Object[] params = new Object[] { id };
+
+        int[] types = new int[] { Types.INTEGER };
+
+        jdbcTemplate.update(deleteSqlAccount, params, types);
+        jdbcTemplate.update(deleteSqlAccountCharacters, params, types);
+
+        return 1;
+    }
+
+    /**
+     * get all account in database, without showing characters
+     * 
+     * @return List<Account>
+     */
+    @Override
+    public List<Account> getAccounts() {
+        final String selectSqlAccount = "SELECT _id, game_name, server_name FROM account";
+
+        List<Account> accounts = jdbcTemplate.query(selectSqlAccount, (ResultSet resultSet, int i) -> {
+            int id = Integer.parseInt(resultSet.getString("_id"));
+            String gameName = resultSet.getString("game_name");
+            String serverName = resultSet.getString("server_name");
+
+            return new Account(gameName, serverName, id, null);
+        });
+        return accounts;
     }
 
 }

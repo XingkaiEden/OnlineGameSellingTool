@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { getGame, getGames } from "../services/gameService";
+import { getGame, getGames } from "../../services/gameService";
 import { Link, NavLink } from "react-router-dom";
-import Game from "../common/game";
+import Game from "../../common/game";
 
 class SelectGame extends Component {
   state = { games: [] };

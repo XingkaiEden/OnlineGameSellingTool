@@ -16,3 +16,14 @@ export function getAccounts(gameName, server, characters) {
 export function saveAccount(account) {
   return http.post(apiEndpoint, account);
 }
+
+export function getAllAccounts() {
+  return http.get(apiEndpoint);
+}
+export function deleteAccount(id) {
+  return http.delete(accountUrl(id));
+}
+
+function accountUrl(id) {
+  return `${apiEndpoint}/${id}`;
+}

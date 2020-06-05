@@ -1,15 +1,17 @@
 import http from "./httpService";
 import jwtDecode from "jwt-decode";
 
-const apiEndPoint = "/auth";
+const apiEndPoint = process.env.REACT_APP_API_URL + "/authenticate ";
 const tokenKey = "token";
 
 http.setJWT(getJWT()); // give http the jwt instead to ask it from http. Solving Bi-directional Dependencies
-export async function login(email, password) {
-  const { data: jwt } = await http.post(apiEndPoint, { email, password });
+export async function login(username, password) {
+  const { data: jwt } = await http.post(apiEndPoint, { username, password });
+
+  console.log(jwt);
   //posted the entered username and password into server, then
   // store the json web token(jwt) into localstorage
-  localStorage.setItem(tokenKey, jwt);
+  localStorage.setItem(tokenKey, jwt.jwt);
 }
 export function logout() {
   localStorage.removeItem(tokenKey);

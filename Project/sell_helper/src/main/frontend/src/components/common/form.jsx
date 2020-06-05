@@ -31,6 +31,7 @@ class Form extends Component {
   validate = () => {
     const option = { abortEarly: false };
     const result = Joi.validate(this.state.data, this.schema, option);
+    console.log(result);
     // Joi.validate([object we want to validate], [validation schema],{abortEarly})
     if (!result.error) return null; //if no error, return null
     const error = {}; // set error object in state
@@ -58,11 +59,7 @@ class Form extends Component {
 
   renderButton(label) {
     return (
-      <button
-        // disabled={this.validate()}
-
-        className="btn btn-primary"
-      >
+      <button disabled={this.validate()} className="btn btn-primary">
         {label}
       </button>
     );

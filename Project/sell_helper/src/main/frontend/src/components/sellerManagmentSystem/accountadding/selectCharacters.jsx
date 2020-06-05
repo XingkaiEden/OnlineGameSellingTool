@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 
 import { Link, NavLink } from "react-router-dom";
-import Button from "../common/button";
-import Character from "../common/character";
-import Form from "../common/form";
-
-import { getGames } from "../services/gameService";
-import { setTempStoreage } from "../services/tempserver";
+import Button from "../../common/button";
+import Character from "../../common/character";
+import Form from "../../common/form";
+import { setTempStoreage } from "../../services/tempserver";
 
 class SelectCharacters extends Form {
   state = {};

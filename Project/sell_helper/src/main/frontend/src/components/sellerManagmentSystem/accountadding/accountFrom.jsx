@@ -1,9 +1,9 @@
 import React from "react";
-import Form from "../common/form";
+import Form from "../../common/form";
 import Joi from "joi-browser";
-import { saveAccount } from "../services/accountsService";
-import { getTempStorage } from "../services/tempserver";
-import { password } from "../../password.json";
+import { saveAccount } from "../../services/accountsService";
+import { getTempStorage } from "../../services/tempserver";
+import { password } from "../../../password.json";
 // let counter = 1;
 class AccountFrom extends Form {
   state = {
@@ -22,9 +22,12 @@ class AccountFrom extends Form {
   }
 
   schema = {
-    _id: Joi.number(),
+    _id: Joi.number().required().label("账号ID"),
     serverName: Joi.string().required().label("所属服务器"),
+    gameName: Joi.string(),
+    characters: Joi.array(),
   };
+
   doSubmit = async () => {
     //在这里处理表格提交
     console.log(this.state.data); //test
@@ -33,7 +36,9 @@ class AccountFrom extends Form {
     // console.log(this.state.data)
 
     await saveAccount(this.state.data);
-    this.props.history.push("/" + password);
+
+    this.props.history.push("/accounts");
+    // this.props.history.push("/" + password);
   };
 
   render() {
